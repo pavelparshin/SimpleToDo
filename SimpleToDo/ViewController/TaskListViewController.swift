@@ -7,16 +7,28 @@
 //
 
 import UIKit
+import CoreData
 
 class TaskListViewController: UITableViewController {
 
+    private let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    private let cellID = "cell"
+    private var tasks: [Task] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         
         setupNavigationBar()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchData()
+        tableView.reloadData()
+    }
 
-
+    // MARK: - Private methods
     private func setupNavigationBar() {
         title = "Task List"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -42,7 +54,37 @@ class TaskListViewController: UITableViewController {
     
     @objc private func addTask() {
         let newTaskVC = NewTaskViewController()
+        newTaskVC.modalPresentationStyle = .fullScreen
         present(newTaskVC, animated: true)
+    }
+}
+
+// MARK: - Core Data
+extension TaskListViewController {
+    
+    private func fetchData() {
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        do {
+            tasks = try viewContext.fetch(fetchRequest)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+}
+
+// MARK: - Table View data source
+extension TaskListViewController {
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        tasks.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
+        let task = tasks[indexPath.row]
+        cell.textLabel?.text = task.name
+        
+        return cell
     }
 }
 

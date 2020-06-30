@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import CoreData
 
 class NewTaskViewController: UIViewController {
+    
+    private let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     private lazy var newTaskTextField: UITextField = {
         let textField = UITextField()
@@ -79,6 +82,19 @@ class NewTaskViewController: UIViewController {
     }
     
     @objc private func save() {
+        
+        guard let entityDescription = NSEntityDescription
+            .entity(forEntityName: "Task", in: viewContext) else { return }
+        guard let task = NSManagedObject(entity: entityDescription, insertInto: viewContext) as? Task else { return }
+        
+        task.name = newTaskTextField.text
+        
+        do {
+            try viewContext.save()
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        
         dismiss(animated: true)
     }
     
