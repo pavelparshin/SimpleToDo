@@ -66,4 +66,16 @@ class StorageManager {
         return task
     }
     
+    func edit(task: Task, newName: String) {
+        
+    }
+    
+    func delete(task: Task) {
+        persistentContainer.viewContext.delete(task)
+        do {
+            try persistentContainer.viewContext.save()
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
 }

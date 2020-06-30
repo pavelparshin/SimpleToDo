@@ -41,7 +41,6 @@
 			isa = PBXGroup;
 			children = (
 				2B07ED7024AB775800A5129A /* StorageManager.swift */,
-				2BC2089224AB2E2000DBC1B2 /* SimpleToDo.xcdatamodeld */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -49,6 +48,7 @@
 		2B07ED7224AB7CD200A5129A /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				2BC2089224AB2E2000DBC1B2 /* SimpleToDo.xcdatamodeld */,
 				2BC2088924AB2E1F00DBC1B2 /* AppDelegate.swift */,
 				2BC2089A24AB2E2100DBC1B2 /* Info.plist */,
 			);
