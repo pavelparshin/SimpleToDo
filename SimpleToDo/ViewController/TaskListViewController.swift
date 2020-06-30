@@ -80,15 +80,17 @@ class TaskListViewController: UITableViewController {
         tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
-    private func editTask(indexPath: IndexPath) {
-        
+    private func editTask(_ task: Task, with indexPath: IndexPath, to newName: String) {
+        task.name = newName
+        storage.edit(task: task)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
     // MARK: - Alert Messages
     private func showAlert(with title: String, and message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let saveAction = UIAlertAction(title: "Save Task", style: .default) { _ in
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
             guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
             self.save(task)
         }
@@ -98,6 +100,26 @@ class TaskListViewController: UITableViewController {
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
         alert.addTextField()
+        
+        present(alert, animated: true)
+    }
+    
+    private func showEditAlert(with title: String, and message: String, for indexPath: IndexPath) {
+        let task = tasks[indexPath.row]
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let saveAction = UIAlertAction(title: "Edit", style: .default) { _ in
+            guard let newTask = alert.textFields?.first?.text, !newTask.isEmpty else { return }
+            self.editTask(task, with: indexPath, to: newTask)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        alert.addTextField { textField in
+            textField.text = task.name
+        }
         
         present(alert, animated: true)
     }
@@ -148,8 +170,8 @@ extension TaskListViewController {
     
     // MARK: Swipe Actions
     private func editTaskAction(with indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "Edit") { (action, view, complition) in
-            self.editTask(indexPath: indexPath)
+        let action = UIContextualAction(style: .destructive, title: "Edit") { ( _, _, complition) in
+            self.showEditAlert(with: "Edit Task", and: "Would you like to change this task?", for: indexPath)
             complition(true)
         }
         action.backgroundColor = UIColor(red: 21/255,
@@ -161,7 +183,7 @@ extension TaskListViewController {
     }
     
     private func deleteTaskAction(with indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, complition) in
+        let action = UIContextualAction(style: .destructive, title: "Delete") { ( _, _, complition) in
             self.deleteTask(forRowAt: indexPath)
             complition(true)
         }

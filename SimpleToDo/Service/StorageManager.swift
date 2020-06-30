@@ -66,8 +66,13 @@ class StorageManager {
         return task
     }
     
-    func edit(task: Task, newName: String) {
-        
+    func edit(task: Task) {
+        persistentContainer.viewContext.refresh(task, mergeChanges: true)
+        do {
+            try persistentContainer.viewContext.save()
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     func delete(task: Task) {
