@@ -11,9 +11,9 @@ import CoreData
 
 class TaskListViewController: UITableViewController {
 
-    private let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     private let cellID = "cell"
     private var tasks: [Task] = []
+    private let storage = StorageManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +24,7 @@ class TaskListViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchData()
+        tasks = storage.fetchData()
         tableView.reloadData()
     }
 
@@ -73,36 +73,13 @@ class TaskListViewController: UITableViewController {
         
         present(alert, animated: true)
     }
-}
-
-// MARK: - Core Data
-extension TaskListViewController {
-    
-    private func fetchData() {
-        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
-        do {
-            tasks = try viewContext.fetch(fetchRequest)
-        } catch let error {
-            print(error.localizedDescription)
-        }
-    }
     
     private func save(_ taskName: String) {
-        guard let entityDescription = NSEntityDescription
-            .entity(forEntityName: "Task", in: viewContext) else { return }
-        guard let task = NSManagedObject(entity: entityDescription, insertInto: viewContext) as? Task else { return }
-        
-        task.name = taskName
+        guard let task = storage.save(taskName) else { return }
         tasks.append(task)
         
         let indexPath = IndexPath(row: tasks.count - 1, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
-        
-        do {
-            try viewContext.save()
-        } catch let error {
-            print(error.localizedDescription)
-        }
     }
 }
 
