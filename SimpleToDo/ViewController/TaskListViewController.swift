@@ -53,9 +53,25 @@ class TaskListViewController: UITableViewController {
     }
     
     @objc private func addTask() {
-        let newTaskVC = NewTaskViewController()
-        newTaskVC.modalPresentationStyle = .fullScreen
-        present(newTaskVC, animated: true)
+        
+        showAlert(with: "New Task", and: "What do you want to do?")
+    }
+    
+    private func showAlert(with title: String, and message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let saveAction = UIAlertAction(title: "Save Task", style: .default) { _ in
+            guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
+            self.save(task)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        alert.addTextField()
+        
+        present(alert, animated: true)
     }
 }
 
@@ -66,6 +82,24 @@ extension TaskListViewController {
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
         do {
             tasks = try viewContext.fetch(fetchRequest)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func save(_ taskName: String) {
+        guard let entityDescription = NSEntityDescription
+            .entity(forEntityName: "Task", in: viewContext) else { return }
+        guard let task = NSManagedObject(entity: entityDescription, insertInto: viewContext) as? Task else { return }
+        
+        task.name = taskName
+        tasks.append(task)
+        
+        let indexPath = IndexPath(row: tasks.count - 1, section: 0)
+        tableView.insertRows(at: [indexPath], with: .automatic)
+        
+        do {
+            try viewContext.save()
         } catch let error {
             print(error.localizedDescription)
         }
