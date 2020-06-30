@@ -41,8 +41,18 @@
 			isa = PBXGroup;
 			children = (
 				2B07ED7024AB775800A5129A /* StorageManager.swift */,
+				2BC2089224AB2E2000DBC1B2 /* SimpleToDo.xcdatamodeld */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		2B07ED7224AB7CD200A5129A /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				2BC2088924AB2E1F00DBC1B2 /* AppDelegate.swift */,
+				2BC2089A24AB2E2100DBC1B2 /* Info.plist */,
+			);
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		2B8091D124AB35A1007CCF38 /* Source */ = {
@@ -92,9 +102,7 @@
 			children = (
 				2B07ED6F24AB773B00A5129A /* Service */,
 				2B8091D224AB35B9007CCF38 /* ViewController */,
-				2BC2088924AB2E1F00DBC1B2 /* AppDelegate.swift */,
-				2BC2089A24AB2E2100DBC1B2 /* Info.plist */,
-				2BC2089224AB2E2000DBC1B2 /* SimpleToDo.xcdatamodeld */,
+				2B07ED7224AB7CD200A5129A /* SupportingFiles */,
 			);
 			path = SimpleToDo;
 			sourceTree = "<group>";
@@ -310,7 +318,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ZXQUQVQEL;
-				INFOPLIST_FILE = SimpleToDo/Info.plist;
+				INFOPLIST_FILE = SimpleToDo/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,7 +336,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ZXQUQVQEL;
-				INFOPLIST_FILE = SimpleToDo/Info.plist;
+				INFOPLIST_FILE = SimpleToDo/SupportingFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
