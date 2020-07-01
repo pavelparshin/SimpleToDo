@@ -11,8 +11,8 @@ import CoreData
 
 class TaskListViewController: UITableViewController {
 
+    var tasks: [Task] = []
     private let cellID = "cell"
-    private var tasks: [Task] = []
     private let storage = StorageManager.shared
     private let constant = Constant.shared
     
@@ -64,7 +64,7 @@ class TaskListViewController: UITableViewController {
         showEditAlert(with: "Edit Task", and: "Would do you like to change this task?", for: indexPatch)
     }
     
-    private func save(_ taskName: String) {
+    func save(_ taskName: String) {
         guard let task = storage.save(taskName) else { return }
         tasks.append(task)
         
@@ -72,54 +72,16 @@ class TaskListViewController: UITableViewController {
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
-    private func deleteTask(forRowAt indexPath: IndexPath) {
-        storage.delete(task: tasks[indexPath.row])
-        tasks.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .fade)
-    }
-    
-    private func editTask(_ task: Task, with indexPath: IndexPath, to newName: String) {
+    func editTask(_ task: Task, with indexPath: IndexPath, to newName: String) {
         task.name = newName
         storage.edit(task: task)
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
-    // MARK: - Alert Messages
-    private func showAlert(with title: String, and message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
-            guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
-            self.save(task)
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
-        
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        alert.addTextField()
-        
-        present(alert, animated: true)
-    }
-    
-    private func showEditAlert(with title: String, and message: String, for indexPath: IndexPath) {
-        let task = tasks[indexPath.row]
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        let saveAction = UIAlertAction(title: "Edit", style: .default) { _ in
-            guard let newTask = alert.textFields?.first?.text, !newTask.isEmpty else { return }
-            self.editTask(task, with: indexPath, to: newTask)
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
-        
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        alert.addTextField { textField in
-            textField.text = task.name
-        }
-        
-        present(alert, animated: true)
+    private func deleteTask(forRowAt indexPath: IndexPath) {
+        storage.delete(task: tasks[indexPath.row])
+        tasks.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
 }
