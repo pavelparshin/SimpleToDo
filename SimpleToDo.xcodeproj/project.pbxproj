@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B056CAF24AC81570067D593 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B056CAE24AC81570067D593 /* Constant.swift */; };
 		2B07ED7124AB775800A5129A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B07ED7024AB775800A5129A /* StorageManager.swift */; };
 		2BC2088A24AB2E1F00DBC1B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC2088924AB2E1F00DBC1B2 /* AppDelegate.swift */; };
 		2BC2088E24AB2E1F00DBC1B2 /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC2088D24AB2E1F00DBC1B2 /* TaskListViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B056CAE24AC81570067D593 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		2B07ED7024AB775800A5129A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		2BC2088624AB2E1F00DBC1B2 /* SimpleToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BC2088924AB2E1F00DBC1B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -37,6 +39,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B056CAD24AC81420067D593 /* Constant */ = {
+			isa = PBXGroup;
+			children = (
+				2B056CAE24AC81570067D593 /* Constant.swift */,
+			);
+			path = Constant;
+			sourceTree = "<group>";
+		};
 		2B07ED6F24AB773B00A5129A /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +110,7 @@
 		2BC2088824AB2E1F00DBC1B2 /* SimpleToDo */ = {
 			isa = PBXGroup;
 			children = (
+				2B056CAD24AC81420067D593 /* Constant */,
 				2B07ED6F24AB773B00A5129A /* Service */,
 				2B8091D224AB35B9007CCF38 /* ViewController */,
 				2B07ED7224AB7CD200A5129A /* SupportingFiles */,
@@ -179,6 +190,7 @@
 			files = (
 				2BC2088E24AB2E1F00DBC1B2 /* TaskListViewController.swift in Sources */,
 				2BC2088A24AB2E1F00DBC1B2 /* AppDelegate.swift in Sources */,
+				2B056CAF24AC81570067D593 /* Constant.swift in Sources */,
 				2BC2089424AB2E2000DBC1B2 /* SimpleToDo.xcdatamodeld in Sources */,
 				2B07ED7124AB775800A5129A /* StorageManager.swift in Sources */,
 			);

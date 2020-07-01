@@ -6,7 +6,6 @@
 //  Copyright © 2020 Pavel Parshin. All rights reserved.
 //
 
-import Foundation
 import CoreData
 
 class StorageManager {
@@ -25,7 +24,7 @@ class StorageManager {
         return container
     }()
     
-    // MARK: - Core Data Saving support
+    // MARK: Core Data Saving support
     func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -56,31 +55,19 @@ class StorageManager {
         guard let task = NSManagedObject(entity: entityDescription, insertInto: persistentContainer.viewContext) as? Task else { return nil }
         
         task.name = taskName
-        
-        do {
-            try persistentContainer.viewContext.save()
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        saveContext()
         
         return task
     }
     
     func edit(task: Task) {
         persistentContainer.viewContext.refresh(task, mergeChanges: true)
-        do {
-            try persistentContainer.viewContext.save()
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        saveContext()
+        
     }
     
     func delete(task: Task) {
         persistentContainer.viewContext.delete(task)
-        do {
-            try persistentContainer.viewContext.save()
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        saveContext()
     }
 }

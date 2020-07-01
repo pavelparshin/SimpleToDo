@@ -14,6 +14,7 @@ class TaskListViewController: UITableViewController {
     private let cellID = "cell"
     private var tasks: [Task] = []
     private let storage = StorageManager.shared
+    private let constant = Constant.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,10 +39,8 @@ class TaskListViewController: UITableViewController {
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        navBarAppearance.backgroundColor = UIColor(red: 21/255,
-                                                   green: 101/255,
-                                                   blue: 192/255,
-                                                   alpha: 194/255)
+        navBarAppearance.backgroundColor = constant.mainColor
+        
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
@@ -51,9 +50,8 @@ class TaskListViewController: UITableViewController {
                                                             action: #selector(addTask))
         
         //Edit button
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
-                                                           target: self,
-                                                           action: #selector(editTaskSelector))
+        navigationItem.leftBarButtonItem = editButtonItem
+        
         navigationController?.navigationBar.tintColor = .white
     }
     
@@ -61,9 +59,9 @@ class TaskListViewController: UITableViewController {
         showAlert(with: "New Task", and: "What do you want to do?")
     }
     
-    @objc private func editTaskSelector() {
-        tableView.isEditing.toggle()
-        
+    @objc private func editCellTask(_ sender: UIButton) {
+        let indexPatch = IndexPath(row: sender.tag, section: 0)
+        showEditAlert(with: "Edit Task", and: "Would do you like to change this task?", for: indexPatch)
     }
     
     private func save(_ taskName: String) {
@@ -138,6 +136,7 @@ extension TaskListViewController {
         let task = tasks[indexPath.row]
         cell.textLabel?.text = task.name
         
+        editButton(in: cell, and: indexPath)
         return cell
     }
     
@@ -152,16 +151,27 @@ extension TaskListViewController {
         .delete
     }
     
+    // additing Edit Button
+    private func editButton(in cell: UITableViewCell, and indexPath: IndexPath) {
+        let button = UIButton(frame: CGRect(x: cell.frame.width, y: 0, width: 50, height: 50))
+        button.setImage(UIImage(systemName: "pencil.circle.fill"), for: .normal)
+        button.addTarget(self, action: #selector(editCellTask), for: .touchUpInside)
+        button.tag = indexPath.row
+        button.tintColor = constant.editColor
+        
+        cell.addSubview(button)
+    }
 }
 
 // MARK: - Table view delegate
 extension TaskListViewController {
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return UISwipeActionsConfiguration(actions: [editTaskAction(with: indexPath)])
+        UISwipeActionsConfiguration(actions: [editTaskAction(with: indexPath)])
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -169,15 +179,12 @@ extension TaskListViewController {
     }
     
     // MARK: Swipe Actions
-    private func editTaskAction(with indexPath: IndexPath) -> UIContextualAction {
+    @objc private func editTaskAction(with indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Edit") { ( _, _, complition) in
-            self.showEditAlert(with: "Edit Task", and: "Would you like to change this task?", for: indexPath)
+            self.showEditAlert(with: "Edit Task", and: "Would do you like to change this task?", for: indexPath)
             complition(true)
         }
-        action.backgroundColor = UIColor(red: 21/255,
-                                         green: 192/255,
-                                         blue: 101/255,
-                                         alpha: 194/255)
+        action.backgroundColor = constant.editColor
         action.image = UIImage(systemName: "pencil.circle.fill")
         return action
     }
@@ -187,7 +194,7 @@ extension TaskListViewController {
             self.deleteTask(forRowAt: indexPath)
             complition(true)
         }
-        action.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+        action.backgroundColor = constant.deleteColor
         action.image = UIImage(systemName: "delete.left.fill")
         return action
     }
