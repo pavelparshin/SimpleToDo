@@ -124,7 +124,7 @@ class TaskListViewController: UITableViewController {
     
 }
 
-// MARK: - Table View data source
+// MARK: - UITableViewDataSource
 extension TaskListViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -147,10 +147,6 @@ extension TaskListViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        .delete
-    }
-    
     // additing Edit Button
     private func editButton(in cell: UITableViewCell, and indexPath: IndexPath) {
         let button = UIButton(frame: CGRect(x: cell.frame.width, y: 0, width: 50, height: 50))
@@ -163,8 +159,12 @@ extension TaskListViewController {
     }
 }
 
-// MARK: - Table view delegate
+// MARK: - UITableViewDelegate
 extension TaskListViewController {
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .delete
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
